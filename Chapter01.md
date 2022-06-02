@@ -79,4 +79,43 @@
     * Situation where we sacrifice reliability to reduce development cost (such as in a prototype), or operational cost (service has narrow profit margin)
     * But we should make these choices very carefully
 * Scalability
-    * …
+    * A system working reliably today may not work reliably in the future
+    * One reason: increased load (concurrent users, volume of data)
+    * Scalability is not 1-dimensional; if a system scales in a particular way, what are the options to handle
+    * Defining load
+        * Load parameters (requests per second to a web server, ratio of reads to writes in a database, number of simultaneous users in a chat room, hit rate on cache, etc.)
+        * Is average case important? Or small number of extreme cases?
+    * Consider Twitter
+        * Operation: post tweet (4.6k requests per second on average, over 12k requests per second at peak)
+        * Operation: view tweets posted by followed people (300k requests per second)
+        * Fan out: term from electronic engineering, where output needs to drive all attached inputs
+        * Ways of implementing (insert into global collection of tweets, maintain a cache for each user’s home timeline)
+    * First version of Twitter used approach 1 (SQL query), but had to move to approach 2 (since writes are 2 orders of magnitude fewer than reads)
+    * Twitter tries to deliver tweets to followers within 5 seconds
+    * Load parameter for Twitter: distribution of followers per user (weighted by how often users tweet)
+    * Exception for celebrities: tweets for celebrities are merged into a user’s home timeline
+* Describing performance
+    * When you increase a load param, and keep system resources unchanged, how is system performance affected?
+    * When you increase a load param, how much do you need to increase system resources to keep performance unchanged?
+    * Throughput: number of records processed per second, important in batch processing systems
+    * Response time: more important in online systems
+    * Skew: data not spread evenly across worker processes, needing to wait for the slowest task to complete
+    * Latency vs response time
+        * Response time is what the client sees
+        * Latency is the duration that a request is waiting to be handled, during which it is latent
+    * Think of response time as a distribution of values to measure
+        * There are occasional outliers in response time
+    * Average response time, typically the arithmetic mean, but not good metric if you want to know the “typical” response time
+    * Better to use percentiles; median is a good metric for how long users typically wait (abbreviated as p50)
+    * P95, p99, p999 to look at outliers – these are known as tail latencies
+    * P999 is important for Amazon, since those outliers are typically the customers who buy the most stuff
+    * On the other hand, P9999 wasn’t worth pursuing for Amazon
+    * Service level objective (SLO) and service level agreement (SLA)
+        * Often uses percentiles
+        * Define the expected performance and availability of a service
+        * Example: service is up if median response time (p50) is less than 200ms, and 99th percentile is under 1s, service must be up at least 99.9% of the time
+            * Customers can demand a refund if SLA is not met
+    * Head-of-line blocking: small number of slow requests will hold up processing of subsequent requests
+        * Due to this effect, it’s important to measure response times on client side
+    * When generating load artificially, load-generating client needs to send requests independently of response time
+        * Don’t want to artificially keep the queues shorter than they would be in reality, which skews measurements
