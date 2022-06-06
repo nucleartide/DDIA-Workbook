@@ -119,3 +119,42 @@
         * Due to this effect, it’s important to measure response times on client side
     * When generating load artificially, load-generating client needs to send requests independently of response time
         * Don’t want to artificially keep the queues shorter than they would be in reality, which skews measurements
+    * Tail-latency amplification (higher proportion of end-user requests are slow if there are parallel backend requests)
+    * Rolling window of response times for monitoring latencies
+        * Some info about computing percentiles
+    * Will need to rethink architecture on every order of magnitude load increase
+    * Scaling up versus scaling out
+    * Distributing load across many machines is called shared-nothing architecture
+    * Elastic systems are useful when load is unpredictable, but manually scaled systems are simpler and have fewer surprises
+    * Distributing a system adds significant complexity. Common wisdom: scale DB vertically until you absolutely need to distribute (because of cost, high availability)
+    * There is no magic scaling sauce
+    * System that is designed for 10k requests per second with 1kb payloads is very different from 3 requests per minute, 2Gb payload system
+    * In a startup, it’s more important to iterate quickly on product features versus scaling to a hypothetical future load
+        * (Jason: however if scaling is easy or convenient then by all means go for it)
+* Maintainability
+    * Operability: make it easy for operations teams to keep the system running smoothly
+    * Simplicity: make it easy for new engineers to understand
+    * Evolvability: make it easy for engineers to change and evolve the system
+    * Operations
+        * Monitoring health of system
+        * Tracking down failures or degraded performance
+        * Keeping stuff up to date
+        * funny: preserving the organization’s knowledge about a system, even as individual people come and go
+    * Make routine tasks easy
+        * Visibility into runtime and internals
+        * Good documentation and operational model
+        * Self-healing where appropriate
+    * Simplicity
+        * Big ball of mud (mired in complexity)
+        * Reducing complexity greatly improves maintainability
+        * Accidental complexity: not inherent in the problem that the software solves, but arises from the implementation
+        * Abstraction, such as programming languages, SQL, etc.
+    * Evolvability
+        * Agile working patterns provide a framework for adapting to change
+        * Test-driven development, refactoring
+        * How would one refactor Twitter’s architecture, not just at the local source code level
+        * Agility on a data system level is evolvability
+    * Functional and non-functional requirements
+    * Reliability: making systems work correctly even in presence of faults
+    * Scalability: strategies for keeping performance good even when load increases. Need to describe load and performance quantitatively
+    * Maintainability: make life easier for engineering and operations teams
