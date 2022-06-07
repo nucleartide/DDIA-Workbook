@@ -19,3 +19,31 @@
 * Document DB such as Mongo, Rethink, CouchDB, and Espresso support document data model
     * Such as in resumes
     * JSON representation has better locality: in the multiple table example, you need multiple queries or a complex join query. When it’s 1 document, you only need 1 query
+* Normalization: removing redundant copies of data
+	* IDs never change: they have no meaning to humans
+	* Work of making a join is shifted from database to application code
+* Information Management System (IMS), developed for stockkeeping
+* CODASYL network data model
+* Relational model
+	* Relation is a collection of rows
+	* Query optimizer automatically decides which parts of the query to execute in what order, and which indexes to use
+	* To query data in new ways, just declare a new index
+* For one-to-many and many-to-many, relational and document databases are similar:
+	* Foreign keys and document references are used
+* Which is better?
+	* Depends on whether your data has a document-like structure (all data is loaded at once) or not
+* For highly interconnected data, the document model is awkward, the relational model is acceptable, and graph models are the most natural
+* Schema-on-read versus schema-on-write (when is the schema enforced in document vs relational dbs)
+* Schema changes have a bad rep, but it's an undeserved one
+	* However MySQL copies the entire table on ALTER TABLE, which causes significant downtime
+* Schemas are useful when all records are expected to have the same structure
+* Need to load the entire document in a document DB, which affects performance in the case where documents are large. Thus, documents must be kept small
+* Grouping data for locality is not limited to document databases
+	* Examples: Google's Spanner, Oracle, Bigtable Column-oriented databases such as Cassandra and HBase
+* Relational and document models are converging (Postgres and MySQL have json columns)
+* Declarative query language hides implementation details of a database engine
+	* Similar to React for the frontend world
+* The Fact that SQL is unordered gives the database more room for automatic optimizations
+* Declarative languages also take advantage of multi-core processors, in terms of executing in parallel, whereas imperative code demands running in sequence
+* Imperative browser code: couples you to APIs, toggling styles is hard to maintain
+* (stopped at mapreduce)
