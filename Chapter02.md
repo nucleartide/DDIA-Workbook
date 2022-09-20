@@ -46,4 +46,15 @@
 * The Fact that SQL is unordered gives the database more room for automatic optimizations
 * Declarative languages also take advantage of multi-core processors, in terms of executing in parallel, whereas imperative code demands running in sequence
 * Imperative browser code: couples you to APIs, toggling styles is hard to maintain
-* (stopped at mapreduce)
+* MapReduce (it maps and reduces)
+* Nothing in SQL that constrains it to running on a single machine
+* Mongo has an aggregation pipeline, which looks a lot like SQL
+* If your data has many many-to-many relationships, consider graph-like data models
+	* Examples: social graphs, web graph, road or rail networks
+* Graphs can also be used to represent heterogeneous data
+	* Think Facebook's graph, where vertices represent people, locations, events, checkins, etc.
+* Property graphs
+	* a vertex has:
+		* a unique ID
+		* sets of incoming and set of outgoing edges
+		* collection of properties (key-value pairs)
